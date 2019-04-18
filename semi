@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# If version is missing output a default version
+if [ -z $1 ]
+then
+  echo "0.0.1"
+  exit 0
+fi
+
+# Increment options: major, minor, patch
+opts=(M m p)
+
+# Incrementation option based on second argument defaulted to patch
+increment=${2:-${opts[2]}}
+
+# Parts of version
+a=(${1//./ })
+
+# Increment and reset other parts
+case $increment in
+  ${opts[0]} )
+    ((a[0]++))
+    a[1]=0
+    a[2]=0
+    ;;
+  ${opts[1]} )
+    ((a[1]++))
+    a[2]=0
+    ;;
+  * )
+    ((a[2]++))
+esac
+
+# Output and exit
+echo $(IFS=.;echo "${a[*]}")
+exit 1
